@@ -1,0 +1,22 @@
+name: 'Bump Github Tag To New Version'
+description: 'Bumps the latest github tag to specified version'
+inputs:
+  token:
+    description: 'Token used for authentication of the repository to update tag'
+    required: true
+    default: null
+  default-bump:
+    description: 'Sets the default tag bump patch, minor, or major'
+    required: false
+    default: 'patch'
+  with-v: 
+    description: 'Add v to tag version'
+    required: false
+    default: false
+  
+outputs:
+  tag: 
+    description: 'Newly created tag'
+runs:
+  using: 'node12'
+  main: 'dist/index.js'
