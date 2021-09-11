@@ -10,9 +10,11 @@ try {
     const withV = core.getInput('with-v')
 
     const octokit = github.getOctokit(token)
+    const context = github.context
     const { owner: currentOwner, repo: currentRepo } = context.repo
 
-    console.log('TAGS:', octokit.rest.repos.listTags({currentOwner, currentRepo}))
+    console.log(currentOwner, currentRepo);
+    console.log('OCTOKIT:', octokit.rest.repos.listTags)
     
     console.log(token, defaultBump, withV)
 } catch (error) {
