@@ -12,7 +12,7 @@ try {
     const octokit = github.getOctokit(token)
     const { owner: currentOwner, repo: currentRepo } = context.repo
 
-    console.log(octokit.rest.repos.listTags({ owner, repo}))
+    console.log('TAGS:', octokit.rest.repos.listTags(currentOwner, currentRepo))
     
     console.log(token, defaultBump, withV)
 } catch (error) {
