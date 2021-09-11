@@ -4,6 +4,7 @@
   "description": "Bump Github Tag To New Version",
   "main": "index.js",
   "scripts": {
+    "build": "ncc build src/action.js -o dist",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -11,7 +12,7 @@
     "url": "git+https://github.com/trevor92/version-bump-tag-action.git"
   },
   "keywords": [],
-  "author": "",
+  "author": "Trevor Rambert",
   "license": "UNLICENSED",
   "bugs": {
     "url": "https://github.com/trevor92/version-bump-tag-action/issues"
@@ -20,6 +21,7 @@
   "dependencies": {
     "@actions/core": "^1.5.0",
     "@actions/github": "^5.0.0",
+    "@vercel/ncc": "^0.31.0",
     "semver": "^7.3.5"
   }
 }
