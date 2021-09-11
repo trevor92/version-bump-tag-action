@@ -9,9 +9,11 @@ try {
     const defaultBump = core.getInput('default-bump')
     const withV = core.getInput('with-v')
 
-    const client = github.getOctokit(core.getInput('token'))
-    const tags = client.rest.repos.listTags()
-    console.log(tags)
+    const octokit = github.getOctokit(token)
+    const { owner: currentOwner, repo: currentRepo } = context.repo
+
+    console.log(octokit.rest.repos.listTags({ owner, repo}))
+    
     console.log(token, defaultBump, withV)
 } catch (error) {
   core.setFailed(error.message);
