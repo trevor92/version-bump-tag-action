@@ -9395,7 +9395,7 @@ const run = async () => {
         const withV = core.getInput('with-v')
         const ownerrepository = core.getInput('repository')
     
-        const owner = ownerrepository.substring(0, ownerrepository.indexOf('/'))
+        const owner = ownerrepository.substring(0, ownerrepository.indexOf('/') + 1)
         const repository = ownerrepository.substring(ownerrepository.indexOf('/') + 1)
         const octokit = github.getOctokit(token)
         // console.log(octokit)
