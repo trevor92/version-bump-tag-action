@@ -15,7 +15,7 @@ const run = async () => {
         const { owner: currentOwner, name: currentRepo } = context.repository
     
         console.log(currentOwner, currentRepo);
-        console.log('OCTOKIT:', await octokit.rest.repos.listTags(currentOwner, currentRepo))
+        console.log('OCTOKIT:', await octokit.rest.repos.listTags({currentOwner, currentRepo}))
         
         console.log(token, defaultBump, withV)
     } catch (error) {
