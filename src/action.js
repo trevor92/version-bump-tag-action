@@ -1,6 +1,7 @@
 const core = require('@actions/core')
 const github = require('@actions/github')
 const semver = require('semver')
+const { exec } = require('child_process')
 
 const run = async () => {
     try {
@@ -12,12 +13,23 @@ const run = async () => {
         const owner = ('/'+ ownerrepository.substring(0, ownerrepository.indexOf('/')))
         const repository = ownerrepository.substring(ownerrepository.indexOf('/') + 1)
         const octokit = github.getOctokit(token)
+        exec('git describe --tags --abbrev=0', (error, stdout, stderr) => {
+            if (error) {
+                console.log(`error: ${error.message}`);
+                return;
+            }
+            if (stderr) {
+                console.log(`stderr: ${stderr}`);
+                return;
+            }
+            console.log(`stdout: ${stdout}`);
+        })
         // console.log(octokit)
         // const { context = {} } = github
         // console.log(context.repository)
         // const { owner: currentOwner, name: currentRepo } = context.repository
-        const results = await octokit.rest.repos.listTags({ owner, repository})
-        console.log('OCTOKIT:', results)
+        // const results = await octokit.rest.repos.listTags({ owner, repository})
+        // console.log('OCTOKIT:', results)
         
         console.log(token, defaultBump, withV)
     } catch (error) {
