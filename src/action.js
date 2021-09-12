@@ -10,9 +10,9 @@ const run = async () => {
     
         const octokit = github.getOctokit(token)
         const { context = {} } = github
-        const { owner: currentOwner, repo: currentRepo } = context.repo
+        // const { owner: currentOwner, repo: currentRepo } = context.repo
     
-        console.log(currentOwner, currentRepo);
+        // console.log(currentOwner, currentRepo);
         console.log('OCTOKIT:', await octokit.rest.repos.listTags())
         
         console.log(token, defaultBump, withV)
