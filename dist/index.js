@@ -9398,9 +9398,9 @@ const run = async () => {
         console.log(octokit)
         const { context = {} } = github
         console.log(context)
-        // const { owner: currentOwner, repo: currentRepo } = context.repo
+        const { owner: currentOwner, name: currentRepo } = context.repository
     
-        // console.log(currentOwner, currentRepo);
+        console.log(currentOwner, currentRepo);
         console.log('OCTOKIT:', await octokit.rest.repos.listTags())
         
         console.log(token, defaultBump, withV)
