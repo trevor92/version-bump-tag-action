@@ -1,6 +1,10 @@
 name: 'Bump Github Tag To New Version'
 description: 'Bumps the latest github tag to specified version'
 inputs:
+  repository: 
+    description: 'The owner and repository name'
+    required: true
+    default: null
   token:
     description: 'Token used for authentication of the repository to update tag'
     required: true

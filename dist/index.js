@@ -9393,15 +9393,17 @@ const run = async () => {
         const token = core.getInput('token')
         const defaultBump = core.getInput('default-bump')
         const withV = core.getInput('with-v')
+        const ownerrepository = core.getInput('repository')
     
+        const owner = ownerrepository.substring(0, ownerrepository.indexOf('/'))
+        const repository = ownerrepository.substring(ownerrepository.indexOf('/') + 1)
         const octokit = github.getOctokit(token)
-        console.log(octokit)
-        const { context = {} } = github
-        console.log(context)
-        const { owner: currentOwner, name: currentRepo } = context.repository
+        // console.log(octokit)
+        // const { context = {} } = github
+        // console.log(context.repository)
+        // const { owner: currentOwner, name: currentRepo } = context.repository
     
-        console.log(currentOwner, currentRepo);
-        console.log('OCTOKIT:', await octokit.rest.repos.listTags())
+        console.log('OCTOKIT:', await octokit.rest.repos.listTags(owner, repository))
         
         console.log(token, defaultBump, withV)
     } catch (error) {
