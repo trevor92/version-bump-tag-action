@@ -16,11 +16,12 @@ const run = async () => {
         // const { context = {} } = github
         // console.log(context.repository)
         // const { owner: currentOwner, name: currentRepo } = context.repository
-    
-        console.log('OCTOKIT:', await octokit.rest.repos.listTags(owner, repository))
+        const results = await octokit.rest.repos.listTags({ owner, repository})
+        console.log('OCTOKIT:', results)
         
         console.log(token, defaultBump, withV)
     } catch (error) {
+        console.log('ERROR:', error)
       core.setFailed(error.message);
     }
 }
