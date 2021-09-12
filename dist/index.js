@@ -9247,6 +9247,14 @@ module.exports = require("assert");
 
 /***/ }),
 
+/***/ 3129:
+/***/ ((module) => {
+
+"use strict";
+module.exports = require("child_process");
+
+/***/ }),
+
 /***/ 8614:
 /***/ ((module) => {
 
@@ -9387,6 +9395,7 @@ var __webpack_exports__ = {};
 const core = __nccwpck_require__(2186)
 const github = __nccwpck_require__(5438)
 const semver = __nccwpck_require__(1383)
+const { exec } = __nccwpck_require__(3129)
 
 const run = async () => {
     try {
@@ -9398,15 +9407,27 @@ const run = async () => {
         const owner = ('/'+ ownerrepository.substring(0, ownerrepository.indexOf('/')))
         const repository = ownerrepository.substring(ownerrepository.indexOf('/') + 1)
         const octokit = github.getOctokit(token)
+        exec('git describe --tags --abbrev=0', (error, stdout, stderr) => {
+            if (error) {
+                console.log(`error: ${error.message}`);
+                return;
+            }
+            if (stderr) {
+                console.log(`stderr: ${stderr}`);
+                return;
+            }
+            console.log(`stdout: ${stdout}`);
+        })
         // console.log(octokit)
         // const { context = {} } = github
         // console.log(context.repository)
         // const { owner: currentOwner, name: currentRepo } = context.repository
-    
-        console.log('OCTOKIT:', await octokit.rest.repos.listTags(owner, repository))
+        // const results = await octokit.rest.repos.listTags({ owner, repository})
+        // console.log('OCTOKIT:', results)
         
         console.log(token, defaultBump, withV)
     } catch (error) {
+        console.log('ERROR:', error)
       core.setFailed(error.message);
     }
 }

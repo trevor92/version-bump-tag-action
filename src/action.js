@@ -28,8 +28,8 @@ const run = async () => {
         // const { context = {} } = github
         // console.log(context.repository)
         // const { owner: currentOwner, name: currentRepo } = context.repository
-        // const results = await octokit.rest.repos.listTags({ owner, repository})
-        // console.log('OCTOKIT:', results)
+        const results = await octokit.rest.repos.listTags({ owner, repository})
+        console.log('OCTOKIT:', results)
         
         console.log(token, defaultBump, withV)
     } catch (error) {
