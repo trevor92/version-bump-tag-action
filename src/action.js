@@ -9,7 +9,7 @@ const run = async () => {
         const withV = core.getInput('with-v')
     
         const octokit = github.getOctokit(token)
-        const context = github.context
+        const { context = {} } = github
         const { owner: currentOwner, repo: currentRepo } = context.repo
     
         console.log(currentOwner, currentRepo);
