@@ -9247,14 +9247,6 @@ module.exports = require("assert");
 
 /***/ }),
 
-/***/ 3129:
-/***/ ((module) => {
-
-"use strict";
-module.exports = require("child_process");
-
-/***/ }),
-
 /***/ 8614:
 /***/ ((module) => {
 
@@ -9395,7 +9387,6 @@ var __webpack_exports__ = {};
 const core = __nccwpck_require__(2186)
 const github = __nccwpck_require__(5438)
 const semver = __nccwpck_require__(1383)
-const { execSync } = __nccwpck_require__(3129)
 
 const run = async () => {
     try {
@@ -9404,7 +9395,7 @@ const run = async () => {
         const withV = core.getInput('with-v')
         const ownerrepository = core.getInput('repository')
     
-        const owner = ('/'+ ownerrepository.substring(0, ownerrepository.indexOf('/')))
+        const owner = (ownerrepository.substring(0, ownerrepository.indexOf('/')))
         const repository = ownerrepository.substring(ownerrepository.indexOf('/') + 1)
         console.log('OWNER:', owner)
         console.log('REPOSITORY:', repository)
@@ -9440,7 +9431,7 @@ const run = async () => {
         // const { context = {} } = github
         // console.log(context.repository)
         // const { owner: currentOwner, name: currentRepo } = context.repository
-        const results = await octokit.rest.repos.listTags({ owner, repository})
+        const results = await octokit.rest.repos.listTags( owner, repository )
         console.log('OCTOKIT:', results)
         console.log(token, defaultBump, withV)
     } catch (error) {
