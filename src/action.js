@@ -22,7 +22,7 @@ const run = async () => {
                 console.log(`stderr: ${stderr}`);
                 return;
             }
-            return;
+            return process.stdout.write(stdout);
             // console.log(`stdout: ${stdout}`);
         })
         console.log('LATEST_TAG', latestTag)
