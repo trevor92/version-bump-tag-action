@@ -9416,9 +9416,10 @@ const run = async () => {
                 console.log(`stderr: ${stderr}`);
                 return;
             }
-            return stdout;
+            return process.stdout.write(stdout);
             // console.log(`stdout: ${stdout}`);
         })
+        console.log('LATEST_TAG', latestTag)
 
         const commitsSinceLastTag = execSync(`git log ${latestTag}..HEAD --pretty=format:"%s"'`, (error, stdout, stderr) => {
             if (error) {
