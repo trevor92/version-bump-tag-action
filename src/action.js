@@ -22,7 +22,7 @@ const run = async () => {
                 console.log(`stderr: ${stderr}`);
                 return;
             }
-            return stdout;
+            return;
             // console.log(`stdout: ${stdout}`);
         })
 
