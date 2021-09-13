@@ -9395,8 +9395,8 @@ const run = async () => {
         const withV = core.getInput('with-v')
         const ownerrepository = core.getInput('repository')
     
-        const owner = (ownerrepository.substring(0, ownerrepository.indexOf('/')))
-        const repository = ownerrepository.substring(ownerrepository.indexOf('/') + 1)
+        const repoOwner = (ownerrepository.substring(0, ownerrepository.indexOf('/')))
+        const repo = ownerrepository.substring(ownerrepository.indexOf('/') + 1)
         console.log('OWNER:', owner)
         console.log('REPOSITORY:', repository)
         const octokit = github.getOctokit(token)
@@ -9431,7 +9431,7 @@ const run = async () => {
         // const { context = {} } = github
         // console.log(context.repository)
         // const { owner: currentOwner, name: currentRepo } = context.repository
-        const results = await octokit.rest.repos.listTags( owner, repository )
+        const results = await octokit.rest.repos.listTags({ owner: repoOwner, repository: repo })
         console.log('OCTOKIT:', results)
         console.log(token, defaultBump, withV)
     } catch (error) {
