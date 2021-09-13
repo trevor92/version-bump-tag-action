@@ -1,7 +1,6 @@
 const core = require('@actions/core')
 const github = require('@actions/github')
 const semver = require('semver')
-const { execSync } = require('child_process')
 
 const run = async () => {
     try {
@@ -10,7 +9,7 @@ const run = async () => {
         const withV = core.getInput('with-v')
         const ownerrepository = core.getInput('repository')
     
-        const owner = ('/'+ ownerrepository.substring(0, ownerrepository.indexOf('/')))
+        const owner = (ownerrepository.substring(0, ownerrepository.indexOf('/')))
         const repository = ownerrepository.substring(ownerrepository.indexOf('/') + 1)
         console.log('OWNER:', owner)
         console.log('REPOSITORY:', repository)
