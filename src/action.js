@@ -11,8 +11,8 @@ const run = async () => {
     
         const repoOwner = (ownerrepository.substring(0, ownerrepository.indexOf('/')))
         const repo = ownerrepository.substring(ownerrepository.indexOf('/') + 1)
-        console.log('OWNER:', owner)
-        console.log('REPOSITORY:', repository)
+        console.log('OWNER:', repoOwner)
+        console.log('REPOSITORY:', repo)
         const octokit = github.getOctokit(token)
         // const latestTag = execSync('git describe --tags --abbrev=0', (error, stdout, stderr) => {
         //     if (error) {
