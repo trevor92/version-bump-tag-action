@@ -25,6 +25,7 @@ const run = async () => {
             return;
             // console.log(`stdout: ${stdout}`);
         })
+        console.log(latestTag)
 
         const commitsSinceLastTag = execSync(`git log ${latestTag}..HEAD --pretty=format:"%s"'`, (error, stdout, stderr) => {
             if (error) {
