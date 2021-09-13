@@ -1,7 +1,7 @@
 const core = require('@actions/core')
 const github = require('@actions/github')
 const semver = require('semver')
-const { exec } = require('child_process')
+const { execSync } = require('child_process')
 
 const run = async () => {
     try {
@@ -13,7 +13,7 @@ const run = async () => {
         const owner = ('/'+ ownerrepository.substring(0, ownerrepository.indexOf('/')))
         const repository = ownerrepository.substring(ownerrepository.indexOf('/') + 1)
         const octokit = github.getOctokit(token)
-        const latestTag = exec('git describe --tags --abbrev=0', (error, stdout, stderr) => {
+        const latestTag = execSync('git describe --tags --abbrev=0', (error, stdout, stderr) => {
             if (error) {
                 console.log(`error: ${error.message}`);
                 return;
@@ -26,7 +26,7 @@ const run = async () => {
             // console.log(`stdout: ${stdout}`);
         })
 
-        const commitsSinceLastTag = exec(`git log ${latestTag}..HEAD --pretty=format:"%s"'`, (error, stdout, stderr) => {
+        const commitsSinceLastTag = execSync(`git log ${latestTag}..HEAD --pretty=format:"%s"'`, (error, stdout, stderr) => {
             if (error) {
                 console.log(`error: ${error.message}`)
                 return
