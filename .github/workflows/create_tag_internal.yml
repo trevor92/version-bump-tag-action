@@ -19,6 +19,6 @@ jobs:
         uses: trevor92/version-bump-tag-action@v0.0.1
         with: 
           repository: ${{ github.repository }}
-          token: ${{ secrets.CICD_GHA }}
+          token: ${{ secrets.GHA_PAT }}
           default-bump: patch
           with-v: true
