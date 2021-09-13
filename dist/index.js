@@ -9406,34 +9406,36 @@ const run = async () => {
     
         const owner = ('/'+ ownerrepository.substring(0, ownerrepository.indexOf('/')))
         const repository = ownerrepository.substring(ownerrepository.indexOf('/') + 1)
+        console.log('OWNER:', owner)
+        console.log('REPOSITORY:', repository)
         const octokit = github.getOctokit(token)
-        const latestTag = execSync('git describe --tags --abbrev=0', (error, stdout, stderr) => {
-            if (error) {
-                console.log(`error: ${error.message}`);
-                return;
-            }
-            if (stderr) {
-                console.log(`stderr: ${stderr}`);
-                return;
-            }
-            return process.stdout.write(stdout);
+        // const latestTag = execSync('git describe --tags --abbrev=0', (error, stdout, stderr) => {
+        //     if (error) {
+        //         console.log(`error: ${error.message}`);
+        //         return;
+        //     }
+        //     if (stderr) {
+        //         console.log(`stderr: ${stderr}`);
+        //         return;
+        //     }
+        //     return process.stdout.write(stdout);
             // console.log(`stdout: ${stdout}`);
-        })
-        console.log('LATEST_TAG', latestTag)
+        // })
+        // console.log('LATEST_TAG', latestTag)
 
-        const commitsSinceLastTag = execSync(`git log ${latestTag}..HEAD --pretty=format:"%s"'`, (error, stdout, stderr) => {
-            if (error) {
-                console.log(`error: ${error.message}`)
-                return
-            }
-            if (stderr) {
-                console.log(`stderr: ${stderr}`)
-                return
-            }
-            return stdout;
-        })
+        // const commitsSinceLastTag = execSync(`git log ${latestTag}..HEAD --pretty=format:"%s"'`, (error, stdout, stderr) => {
+        //     if (error) {
+        //         console.log(`error: ${error.message}`)
+        //         return
+        //     }
+        //     if (stderr) {
+        //         console.log(`stderr: ${stderr}`)
+        //         return
+        //     }
+        //     return stdout;
+        // })
 
-        console.log(commitsSinceLastTag)
+        // console.log(commitsSinceLastTag)
         // console.log(octokit)
         // const { context = {} } = github
         // console.log(context.repository)
