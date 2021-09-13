@@ -13,7 +13,7 @@ const run = async () => {
         const owner = ('/'+ ownerrepository.substring(0, ownerrepository.indexOf('/')))
         const repository = ownerrepository.substring(ownerrepository.indexOf('/') + 1)
         const octokit = github.getOctokit(token)
-        exec('git describe --tags --abbrev=0', (error, stdout, stderr) => {
+        const latestTag = exec('git describe --tags --abbrev=0', (error, stdout, stderr) => {
             if (error) {
                 console.log(`error: ${error.message}`);
                 return;
@@ -22,15 +22,29 @@ const run = async () => {
                 console.log(`stderr: ${stderr}`);
                 return;
             }
-            console.log(`stdout: ${stdout}`);
+            return stdout;
+            // console.log(`stdout: ${stdout}`);
         })
+
+        const commitsSinceLastTag = exec(`git log ${latestTag}..HEAD --pretty=format:"%s"'`, (error, stdout, stderr) => {
+            if (error) {
+                console.log(`error: ${error.message}`)
+                return
+            }
+            if (stderr) {
+                console.log(`stderr: ${stderr}`)
+                return
+            }
+            return stdout;
+        })
+
+        console.log(commitsSinceLastTag)
         // console.log(octokit)
         // const { context = {} } = github
         // console.log(context.repository)
         // const { owner: currentOwner, name: currentRepo } = context.repository
         const results = await octokit.rest.repos.listTags({ owner, repository})
         console.log('OCTOKIT:', results)
-        
         console.log(token, defaultBump, withV)
     } catch (error) {
         console.log('ERROR:', error)
