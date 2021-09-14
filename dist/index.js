@@ -10946,7 +10946,7 @@ const run = async () => {
         console.log(semverTags)
         const latestTag = semverSort.desc(semverTags)[0]
         console.log(latestTag)
-        const newTag = semver.inc(sortedSemverTags, 'patch')
+        const newTag = semver.inc(latestTag, 'patch')
         console.log(newTag)
         // console.log('OCTOKIT:', results.data)
         
