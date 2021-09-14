@@ -1,6 +1,7 @@
 const core = require('@actions/core')
 const github = require('@actions/github')
 const semver = require('semver')
+const semverSort = require('semver-sort')
 
 const run = async () => {
     try {
@@ -20,9 +21,9 @@ const run = async () => {
             }
         })
         console.log(semverTags)
-        const sortedSemverTags = semver.sort(semverTags)[0]
-        console.log(sortedSemverTags)
-        const newTag = semver.inc(sortedSemverTags, patch)
+        const latestTag = semverSort.desc(semverTags)[0]
+        console.log(latestTag)
+        const newTag = semver.inc(sortedSemverTags, 'patch')
         console.log(newTag)
         // console.log('OCTOKIT:', results.data)
         
