@@ -13,10 +13,17 @@ const run = async () => {
         const repository = ownerrepository.substring(ownerrepository.indexOf('/') + 1)
         const octokit = github.getOctokit(token)
         const results = await octokit.rest.repos.listTags({ owner: repoOwner, repo: repository, })
-        const repoTags = results.data.map(tag => tag.name)
-        console.log(repoTags)
-        const latestTag = semver.sort(repoTags)
-        console.log(latestTag[0])
+        // const repoTagsValues = results.data.map(tag => tag.name)
+        const semverTags = results.data.map(tag => {
+            if(semver.valid(tag.name)){
+                return tag.name
+            }
+        })
+        console.log(semverTags)
+        const sortedSemverTags = semver.sort(semverTags)[0]
+        console.log(sortedSemverTags)
+        const newTag = semver.inc(sortedSemverTags, patch)
+        console.log(newTag)
         // console.log('OCTOKIT:', results.data)
         
     } catch (error) {
