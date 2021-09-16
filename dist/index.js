@@ -10948,37 +10948,35 @@ const run = async () => {
         const latestTag = sortedTags[0]
         // const previousTag = sortedTags[1]
         console.log(latestTag)
-        const commits = await octokit.rest.repos.compareCommits({ owner: repoOwner, repo: repository, base: latestTag, head: 'HEAD'})
+        const commitResults = await octokit.rest.repos.compareCommits({ owner: repoOwner, repo: repository, base: latestTag, head: 'HEAD'})
         let requestedBump = null
         // let savedBump = 0
 
-        for( c of commits.data.commits) {
-            console.log(c)
-            let message = c.message
-            console.log(typeof message)
-            // let currentBump
+        for( c of commitResults.data.commits) {
+            let message = c.commit.message
+            let currentBump
 
-            // if(message.includes('#patch')) {
-            //     currentBump = 1
-            //     if(currentBump > savedBump) {
-            //         savedBump = 1
-            //         requestedBump = 'patch'
-            //     }
-            // }
-            // if(message.includes('#minor')) {
-            //     currentBump = 2
-            //     if(currentBump > savedBump) {
-            //         savedBump = 2
-            //         requestedBump = 'minor'
-            //     }
-            // }
-            // if(message.includes('#major')) {
-            //     currentBump = 3
-            //     if(currentBump > savedBump) {
-            //         savedBump = 3
-            //         requestedBump = 'major'
-            //     }
-            // }
+            if(message.includes('#patch')) {
+                currentBump = 1
+                if(currentBump > savedBump) {
+                    savedBump = 1
+                    requestedBump = 'patch'
+                }
+            }
+            if(message.includes('#minor')) {
+                currentBump = 2
+                if(currentBump > savedBump) {
+                    savedBump = 2
+                    requestedBump = 'minor'
+                }
+            }
+            if(message.includes('#major')) {
+                currentBump = 3
+                if(currentBump > savedBump) {
+                    savedBump = 3
+                    requestedBump = 'major'
+                }
+            }
         }
             
         console.log(requestedBump)
