@@ -11031,7 +11031,7 @@ const run = async () => {
         }
         // const tagCreated = await runShellCommand(`git tag ${latestTag}`)
         // console.log(tagCreated)
-        const tagPushed = await runShellCommand(`git push origin ${latestTag}`)
+        const tagPushed = await runShellCommand(`git push origin ${newTag}`)
         // console.log(tagPushed)
         console.log('New tag created:', newTag)
         core.setOutput(newTag)
