@@ -10952,7 +10952,7 @@ const run = async () => {
         let requestedBump = null
         // let savedBump = 0
 
-        for( c of commits.data.commits) {
+        for( c of commits.data.commits[0]) {
             let message = c.message
             console.log(typeof message)
             // let currentBump
