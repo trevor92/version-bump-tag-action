@@ -1,8 +1,10 @@
 const core = require('@actions/core')
-const github = require('@actions/github')
+// const github = require('@actions/github')
+const { context, getOctokit } = require('@actions/github')
+
 const semver = require('semver')
 const semverSort = require('semver-sort')
-const { exec } = require('child_process')
+// const { exec } = require('child_process')
 
 const run = async () => {
     try {
@@ -10,15 +12,18 @@ const run = async () => {
         const defaultBump = core.getInput('default-bump')
         const withV = core.getInput('with-v')
         const ownerrepository = core.getInput('repository')
+        const { GITHUB_SHA } = process.env
     
+        const octokit = getOctokit(token)
+        const repoTags = await octokit.rest.repos.listTags({ ...context.repo, per_page: 1000, page: 1 })
         // Get the owner and repository from environment variable
-        const repoOwner = (ownerrepository.substring(0, ownerrepository.indexOf('/')))
-        const repository = ownerrepository.substring(ownerrepository.indexOf('/') + 1)
-        const octokit = github.getOctokit(token)
-        const results = await octokit.rest.repos.listTags({ owner: repoOwner, repo: repository, })
+        // const repoOwner = (ownerrepository.substring(0, ownerrepository.indexOf('/')))
+        // const repository = ownerrepository.substring(ownerrepository.indexOf('/') + 1)
+        // const octokit = github.getOctokit(token)
+        // const results = await octokit.rest.repos.listTags({ owner: repoOwner, repo: repository, })
        
         //Get semver tags
-        const semverTags = results.data.map(tag => {
+        const semverTags = repoTags.data.map(tag => {
             if(semver.valid(tag.name) !== null || undefined) {
                 return tag.name
             }
@@ -29,13 +34,14 @@ const run = async () => {
         const latestTag = sortedTags[0]
         console.log('Latest tag is:', latestTag)
 
+        const commitsSinceLastTag = await octokit.rest.repos.compareCommits({ ...context.repo, base: latestTag, head: 'HEAD' })
         // Parse commits since last time to determine
         // what the next semver bump should be
-        const commitResults = await octokit.rest.repos.compareCommits({ owner: repoOwner, repo: repository, base: latestTag, head: 'HEAD'})
+        // const commitResults = await octokit.rest.repos.compareCommits({ owner: repoOwner, repo: repository, base: latestTag, head: 'HEAD'})
         let requestedBump = null
         let savedBump = 0
 
-        for( c of commitResults.data.commits) {
+        for( c of commitsSinceLastTag.data.commits) {
             let message = c.commit.message
             let currentBump
 
@@ -69,26 +75,32 @@ const run = async () => {
             newTag = 'v'+ newTag
         }
 
-        const runShellCommand = (cmd) => {
-            return new Promise((resolve, reject) => {
-                exec(cmd, (err, stdout, stderr) => {
-                    if(err) {
-                        console.warn(err)
-                        reject(err)
-                    }
-                    if(stderr) {
-                        console.log(stderr)
-                        reject(stderr)
-                    }
-                    console.log(stdout)
-                    resolve(stdout)
-                })
-            })
-        }
-        const tagCreated = await runShellCommand(`'git tag ${latestTag}'`)
-        console.log(tagCreated)
-        const tagPushed = await runShellCommand(`'git push origin ${latestTag}'`)
-        console.log(tagPushed)
+        const createdTag = await octokit.rest.git.createTag({
+            ...context.repo,
+            ref: `refs/tags/${newTag}`,
+            sha: GITHUB_SHA
+        })
+
+        // const runShellCommand = (cmd) => {
+        //     return new Promise((resolve, reject) => {
+        //         exec(cmd, (err, stdout, stderr) => {
+        //             if(err) {
+        //                 console.warn(err)
+        //                 reject(err)
+        //             }
+        //             if(stderr) {
+        //                 console.log(stderr)
+        //                 reject(stderr)
+        //             }
+        //             console.log(stdout)
+        //             resolve(stdout)
+        //         })
+        //     })
+        // }
+        // const tagCreated = await runShellCommand(`git tag ${latestTag}`)
+        // console.log(tagCreated)
+        // const tagPushed = await runShellCommand(`git push origin ${latestTag}`)
+        // console.log(tagPushed)
         console.log('New tag created:', newTag)
         core.setOutput(newTag)
         
