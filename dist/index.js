@@ -10784,6 +10784,14 @@ module.exports = require("assert");
 
 /***/ }),
 
+/***/ 3129:
+/***/ ((module) => {
+
+"use strict";
+module.exports = require("child_process");
+
+/***/ }),
+
 /***/ 8614:
 /***/ ((module) => {
 
@@ -10925,6 +10933,7 @@ const core = __nccwpck_require__(2186)
 const github = __nccwpck_require__(5438)
 const semver = __nccwpck_require__(1383)
 const semverSort = __nccwpck_require__(9805)
+const { exec } = __nccwpck_require__(3129)
 
 const run = async () => {
     try {
@@ -10933,21 +10942,26 @@ const run = async () => {
         const withV = core.getInput('with-v')
         const ownerrepository = core.getInput('repository')
     
+        // Get the owner and repository from environment variable
         const repoOwner = (ownerrepository.substring(0, ownerrepository.indexOf('/')))
         const repository = ownerrepository.substring(ownerrepository.indexOf('/') + 1)
         const octokit = github.getOctokit(token)
         const results = await octokit.rest.repos.listTags({ owner: repoOwner, repo: repository, })
-        // const repoTagsValues = results.data.map(tag => tag.name)
+       
+        //Get semver tags
         const semverTags = results.data.map(tag => {
-            if(semver.valid(tag.name) !== null) {
+            if(semver.valid(tag.name) !== null || undefined) {
                 return tag.name
             }
         })
-        console.log(semverTags)
+
+        // Sort semver tags to get the latest tag
         const sortedTags = semverSort.desc(semverTags)
         const latestTag = sortedTags[0]
-        // const previousTag = sortedTags[1]
-        console.log(latestTag)
+        console.log('Latest tag is:', latestTag)
+
+        // Parse commits since last time to determine
+        // what the next semver bump should be
         const commitResults = await octokit.rest.repos.compareCommits({ owner: repoOwner, repo: repository, base: latestTag, head: 'HEAD'})
         let requestedBump = null
         let savedBump = 0
@@ -10978,16 +10992,40 @@ const run = async () => {
                 }
             }
         }
-            
-        console.log(requestedBump)
-        const newTag = semver.inc(latestTag, requestedBump || defaultBump)
-        console.log(newTag)
+        
+        // Create new tag on repository and set output
+        // as new tag
+        let newTag = semver.inc(latestTag, requestedBump || defaultBump)
+        if(withV) {
+            newTag = 'v'+ newTag
+        }
+
+        const runShellCommand = (cmd) => {
+            return new Promise((resolve, reject) => {
+                exec(cmd, (err, stdout, stderr) => {
+                    if(err) {
+                        console.warn(err)
+                        reject(err)
+                    }
+                    if(stderr) {
+                        console.log(stderr)
+                        reject(stderr)
+                    }
+                    console.log(stdout)
+                    resolve(stdout)
+                })
+            })
+        }
+        const tagCreated = await runShellCommand(`'git tag ${latestTag}'`)
+        console.log(tagCreated)
+        const tagPushed = await runShellCommand(`'git push origin ${latestTag}'`)
+        console.log(tagPushed)
+        console.log('New tag created:', newTag)
         core.setOutput(newTag)
-        // console.log('OCTOKIT:', results.data)
         
     } catch (error) {
         console.log('ERROR:', error)
-      core.setFailed(error.message);
+        core.setFailed(error.message);
     }
 }
 
