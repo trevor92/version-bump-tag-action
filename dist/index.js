@@ -11012,7 +11012,7 @@ const run = async () => {
         //     sha: GITHUB_SHA
         // })
 
-        const runShellCommand = (cmd) => {
+        const runShellCommand = async (cmd) => {
             return new Promise((resolve, reject) => {
                 exec(cmd, (err, stdout, stderr) => {
                     if(err) {
@@ -11031,7 +11031,7 @@ const run = async () => {
         // const tagCreated = await runShellCommand(`git tag ${latestTag}`)
         // console.log(tagCreated)
         const tagPushed = await runShellCommand(`git push origin ${latestTag}`)
-        console.log(tagPushed)
+        // console.log(tagPushed)
         console.log('New tag created:', newTag)
         core.setOutput(newTag)
         
