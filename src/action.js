@@ -26,20 +26,21 @@ const run = async () => {
         // const previousTag = sortedTags[1]
         console.log(latestTag)
         const commits = await octokit.rest.repos.compareCommits({ owner: repoOwner, repo: repository, base: latestTag, head: 'HEAD'})
-        console.log(commits)
-        // const requestedBump = (commits) => {
-        //     if(commits.includes('#patch')) {
-        //         return 'patch'
-        //     }
-        //     if(commits.includes('#minor')) {
-        //         return 'minor'
-        //     }
-        //     if(commits.includes('#major')) {
-        //         return major
-        //     }
-        //     return null
-        // }
-        const newTag = semver.inc(latestTag, defaultBump)
+        console.log(commits.data.commits)
+        let requestedBump = null
+            if(commits.data.commits.includes('#patch')) {
+                requestedBump =  'patch'
+            }
+            if(commits.data.commits.includes('#minor')) {
+                requestedBump =  'minor'
+            }
+            if(commits.data.commits.includes('#major')) {
+                requestedBump = 'major'
+            }
+            
+        
+        console.log(requestedBump)
+        const newTag = semver.inc(latestTag, requestedBump || defaultBump)
         console.log(newTag)
         core.setOutput(newTag)
         // console.log('OCTOKIT:', results.data)
