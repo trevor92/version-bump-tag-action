@@ -10948,7 +10948,7 @@ const run = async () => {
         const latestTag = sortedTags[0]
         // const previousTag = sortedTags[1]
         console.log(latestTag)
-        const commits = octokit.rest.repos.compareCommits({ owner: repoOwner, repo: repository, base: latestTag, head: 'HEAD'})
+        const commits = await octokit.rest.repos.compareCommits({ owner: repoOwner, repo: repository, base: latestTag, head: 'HEAD'})
         console.log(commits)
         // const requestedBump = (commits) => {
         //     if(commits.includes('#patch')) {
