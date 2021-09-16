@@ -35,7 +35,7 @@ const run = async () => {
         console.log('Latest tag is:', latestTag)
 
         const commitsSinceLastTag = await octokit.rest.repos.compareCommits({ ...context.repo, base: latestTag, head: 'HEAD' })
-        console.log(commitsSinceLastTag.data.commits)
+        // console.log(commitsSinceLastTag.data.commits)
         // Parse commits since last time to determine
         // what the next semver bump should be
         // const commitResults = await octokit.rest.repos.compareCommits({ owner: repoOwner, repo: repository, base: latestTag, head: 'HEAD'})
@@ -44,6 +44,7 @@ const run = async () => {
 
         for( c of commitsSinceLastTag.data.commits) {
             let message = c.commit.message
+            console.log(message)
             let currentBump
 
             if(message.includes('#patch')) {
