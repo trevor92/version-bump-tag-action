@@ -10998,32 +10998,32 @@ const run = async () => {
             newTag = 'v'+ newTag
         }
 
-        const createdTag = await octokit.rest.git.createRef({
-            ...context.repo,
-            ref: `refs/tags/${newTag}`,
-            sha: GITHUB_SHA
-        })
+        // const createdTag = await octokit.rest.git.createRef({
+        //     ...context.repo,
+        //     ref: `refs/tags/${newTag}`,
+        //     sha: GITHUB_SHA
+        // })
 
-        // const runShellCommand = (cmd) => {
-        //     return new Promise((resolve, reject) => {
-        //         exec(cmd, (err, stdout, stderr) => {
-        //             if(err) {
-        //                 console.warn(err)
-        //                 reject(err)
-        //             }
-        //             if(stderr) {
-        //                 console.log(stderr)
-        //                 reject(stderr)
-        //             }
-        //             console.log(stdout)
-        //             resolve(stdout)
-        //         })
-        //     })
-        // }
+        const runShellCommand = (cmd) => {
+            return new Promise((resolve, reject) => {
+                exec(cmd, (err, stdout, stderr) => {
+                    if(err) {
+                        reject()
+                        return
+                    }
+                    if(stderr) {
+                        console.log(stderr)
+                        reject(stderr)
+                        return
+                    }
+                    resolve(stdout)
+                })
+            })
+        }
         // const tagCreated = await runShellCommand(`git tag ${latestTag}`)
         // console.log(tagCreated)
-        // const tagPushed = await runShellCommand(`git push origin ${latestTag}`)
-        // console.log(tagPushed)
+        const tagPushed = await runShellCommand(`git push origin ${latestTag}`)
+        console.log(tagPushed)
         console.log('New tag created:', newTag)
         core.setOutput(newTag)
         
