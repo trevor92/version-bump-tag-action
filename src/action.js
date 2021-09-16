@@ -4,7 +4,7 @@ const { context, getOctokit } = require('@actions/github')
 
 const semver = require('semver')
 const semverSort = require('semver-sort')
-// const { exec } = require('child_process')
+const { exec } = require('child_process')
 
 const run = async () => {
     try {

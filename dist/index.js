@@ -10784,6 +10784,14 @@ module.exports = require("assert");
 
 /***/ }),
 
+/***/ 3129:
+/***/ ((module) => {
+
+"use strict";
+module.exports = require("child_process");
+
+/***/ }),
+
 /***/ 8614:
 /***/ ((module) => {
 
@@ -10927,7 +10935,7 @@ const { context, getOctokit } = __nccwpck_require__(5438)
 
 const semver = __nccwpck_require__(1383)
 const semverSort = __nccwpck_require__(9805)
-// const { exec } = require('child_process')
+const { exec } = __nccwpck_require__(3129)
 
 const run = async () => {
     try {
