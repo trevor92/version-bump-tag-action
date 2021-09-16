@@ -75,7 +75,7 @@ const run = async () => {
             newTag = 'v'+ newTag
         }
 
-        const createdTag = await octokit.rest.git.createTag({
+        const createdTag = await octokit.rest.git.createRef({
             ...context.repo,
             ref: `refs/tags/${newTag}`,
             sha: GITHUB_SHA
