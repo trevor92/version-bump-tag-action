@@ -10950,7 +10950,7 @@ const run = async () => {
         console.log(latestTag)
         const commitResults = await octokit.rest.repos.compareCommits({ owner: repoOwner, repo: repository, base: latestTag, head: 'HEAD'})
         let requestedBump = null
-        // let savedBump = 0
+        let savedBump = 0
 
         for( c of commitResults.data.commits) {
             let message = c.commit.message
