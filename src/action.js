@@ -43,8 +43,9 @@ const run = async () => {
         let savedBump = 0
 
         for( c of commitsSinceLastTag.data.commits) {
-            let message = c.commit.message
-            console.log(message)
+            console.log(c.commit)
+            const message = c.commit.message
+            // console.log(message)
             let currentBump
 
             if(message.includes('#patch')) {
