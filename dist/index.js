@@ -10939,15 +10939,32 @@ const run = async () => {
         const results = await octokit.rest.repos.listTags({ owner: repoOwner, repo: repository, })
         // const repoTagsValues = results.data.map(tag => tag.name)
         const semverTags = results.data.map(tag => {
-            if(semver.valid(tag.name)){
+            if(semver.valid(tag.name) !== null) {
                 return tag.name
             }
         })
         console.log(semverTags)
-        const latestTag = semverSort.desc(semverTags)[0]
+        const sortedTags = semverSort.desc(semverTags)
+        const latestTag = sortedTags[0]
+        // const previousTag = sortedTags[1]
         console.log(latestTag)
-        const newTag = semver.inc(latestTag, 'patch')
+        const commits = octokit.rest.repos.compareCommits({ owner: owner, repo: repository, base: latestTag, head: 'HEAD'})
+        console.log(commits)
+        // const requestedBump = (commits) => {
+        //     if(commits.includes('#patch')) {
+        //         return 'patch'
+        //     }
+        //     if(commits.includes('#minor')) {
+        //         return 'minor'
+        //     }
+        //     if(commits.includes('#major')) {
+        //         return major
+        //     }
+        //     return null
+        // }
+        const newTag = semver.inc(latestTag, defaultBump)
         console.log(newTag)
+        core.setOutput(newTag)
         // console.log('OCTOKIT:', results.data)
         
     } catch (error) {
