@@ -24,5 +24,8 @@
     "@vercel/ncc": "^0.31.0",
     "semver": "^7.3.5",
     "semver-sort": "^0.0.4"
+  },
+  "devDependencies": {
+    "@semantic-release/commit-analyzer": "^9.0.1"
   }
 }
