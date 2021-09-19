@@ -10975,7 +10975,7 @@ const run = async () => {
         // console.log(commitsSinceLastTag.data.commits[0])
 
         for( c of commitsSinceLastTag.data.commits) {
-            console.log(c)
+            console.log(c.commit.author)
             const message = c.commit.message
             // console.log(message)
             // let currentBump
