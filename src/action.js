@@ -47,6 +47,7 @@ const run = async () => {
         for( c of commitsSinceLastTag.data.commits) {
             console.log(c.commit.message)
             requestedBump = await analyzeCommits([{type: 'PATCH', release: 'patch'}, {type: 'MINOR', release: 'minor'}, {type: 'MAJOR', release: 'major'}], c.commit.message)
+            console.log(requestedBump)
             // const message = c.commit.message
             // console.log(message)
             // let currentBump
