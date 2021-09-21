@@ -1,6 +1,7 @@
 const core = require('@actions/core')
 // const github = require('@actions/github')
 const { context, getOctokit } = require('@actions/github')
+const { analyzeCommits } = require('@semantic-release/commit-analyzer')
 
 const semver = require('semver')
 const semverSort = require('semver-sort')
@@ -45,6 +46,7 @@ const run = async () => {
 
         for( c of commitsSinceLastTag.data.commits) {
             console.log(c.commit.message)
+            requestedBump = await analyzeCommits([{type: 'PATCH', release: 'patch'}, {type: 'MINOR', release: 'minor'}, {type: 'MAJOR', release: 'major'}], c.commit.message)
             // const message = c.commit.message
             // console.log(message)
             // let currentBump
