@@ -48,7 +48,7 @@ const run = async () => {
         console.log(commitsSinceLastTag.data.commits)
 
         for( c of commitsSinceLastTag.data.commits) {
-            console.log(c.commit.message)
+            console.log(c.commit)
             // if(c.commit.message == undefined) {
             //     console.log(c)
             // }
