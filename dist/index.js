@@ -42418,11 +42418,14 @@ const run = async () => {
         // const commitResults = await octokit.rest.repos.compareCommits({ owner: repoOwner, repo: repository, base: latestTag, head: 'HEAD'})
         let requestedBump = null
         let savedBump = 0
+        const releaseRules = [
+            {type: 'PATCH', release: 'patch'}, {type: 'MINOR', release: 'minor'}, {type: 'MAJOR', release: 'major'}
+        ]
         // console.log(commitsSinceLastTag.data.commits[0])
 
         for( c of commitsSinceLastTag.data.commits) {
             console.log(c.commit.message)
-            requestedBump = await analyzeCommits([{type: 'PATCH', release: 'patch'}, {type: 'MINOR', release: 'minor'}, {type: 'MAJOR', release: 'major'}], c.commit.message)
+            requestedBump = await analyzeCommits(releaseRules, c.commit.message)
             console.log(requestedBump)
             // const message = c.commit.message
             // console.log(message)
