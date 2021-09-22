@@ -43,16 +43,20 @@ const run = async () => {
         let requestedBump = null
         let savedBump = 0
         const releaseRules = [
-            {type: 'PATCH', release: 'patch'}, {type: 'MINOR', release: 'minor'}, {type: 'MAJOR', release: 'major'}
+            {type: 'MAJOR', release: 'major'}, {type: 'MINOR', release: 'minor'}, {type: 'PATCH', release: 'patch'}
         ]
         // console.log(commitsSinceLastTag.data.commits)
+
+        const commits = commitsSinceLastTag.data.commits.map(commitData => { return commitData.commit.message})
+        
+        console.l
 
         for( c of commitsSinceLastTag.data.commits) {
             // console.log(c.)
             // if(c.commit.message == undefined) {
             //     console.log(c)
             // }
-            requestedBump = await analyzeCommits({releaseRules}, {commits: c.commit.message})
+            requestedBump = await analyzeCommits({releaseRules}, c.commit.message)
             console.log('REQUESTED_BUMP',requestedBump)
             // const message = c.commit.message
             // console.log(message)
