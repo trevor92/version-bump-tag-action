@@ -1,7 +1,6 @@
 const core = require('@actions/core')
 // const github = require('@actions/github')
 const { context, getOctokit } = require('@actions/github')
-const { analyzeCommits } = require('@semantic-release/commit-analyzer')
 
 const semver = require('semver')
 const semverSort = require('semver-sort')
@@ -122,11 +121,17 @@ const run = async () => {
                 })
             })
         }
+
+        await octokit.rest.git.createRef({
+            ...context.repo, 
+            ref: `refs/tags/${newTag}`,
+            sha: GITHUB_SHA 
+        })
         // const tagCreated = await runShellCommand(`git tag ${latestTag}`)
         // console.log(tagCreated)
-        await runShellCommand(`git tag ${newTag}`)
-        const tagPushed = await runShellCommand(`git push origin ${newTag}`)
-        console.log(tagPushed)
+        // await runShellCommand(`git tag ${newTag}`)
+        // const tagPushed = await runShellCommand(`git push origin ${newTag}`)
+        // console.log(tagPushed)
         console.log('New tag created:', newTag)
         core.setOutput(newTag)
         
