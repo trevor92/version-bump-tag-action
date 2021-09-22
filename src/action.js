@@ -40,7 +40,7 @@ const run = async () => {
         // Parse commits since last time to determine
         // what the next semver bump should be
         // const commitResults = await octokit.rest.repos.compareCommits({ owner: repoOwner, repo: repository, base: latestTag, head: 'HEAD'})
-        let requestedBump = null
+        let requestedBump
         let savedBump = 0
         const rules = [
             { "type": "MAJOR", "release": "major" }, { "type": "MINOR", "release": "minor" }, { "type": "PATCH", "release": "patch" }
@@ -72,7 +72,7 @@ const run = async () => {
                     requestedBump = 'patch'
                 }
             }
-            if(c.includes('#minor')) {
+            if(c.includes('added')) {
                 currentBump = 2
                 if(currentBump > savedBump) {
                     savedBump = 2
@@ -91,10 +91,12 @@ const run = async () => {
         
         // Create new tag on repository and set output
         // as new tag
-        let newTag = semver.inc(latestTag, requestedBump || defaultBump)
+        let newTag = semver.inc(latestTag, (requestedBump || defaultBump))
         if(withV) {
             newTag = 'v'+ newTag
         }
+
+        console.log(newTag)
 
         // const createdTag = await octokit.rest.git.createRef({
         //     ...context.repo,
