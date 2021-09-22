@@ -108,14 +108,16 @@ const run = async () => {
             return new Promise((resolve, reject) => {
                 exec(cmd, (err, stdout, stderr) => {
                     if(err) {
-                        reject()
+                        console.log('ERROR IN SHELL', err)
+                        reject(err)
                         return
                     }
                     if(stderr) {
-                        console.log(stderr)
+                        console.log('STDERR IN SHELL', stderr)
                         reject(stderr)
                         return
                     }
+                    console.log(stdout)
                     resolve(stdout)
                 })
             })
