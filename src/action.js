@@ -45,10 +45,10 @@ const run = async () => {
         const releaseRules = [
             {type: 'PATCH', release: 'patch'}, {type: 'MINOR', release: 'minor'}, {type: 'MAJOR', release: 'major'}
         ]
-        console.log(commitsSinceLastTag.data.commits)
+        // console.log(commitsSinceLastTag.data.commits)
 
         for( c of commitsSinceLastTag.data.commits) {
-            console.log(c.commit)
+            console.log(c)
             // if(c.commit.message == undefined) {
             //     console.log(c)
             // }
