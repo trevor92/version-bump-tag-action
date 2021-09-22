@@ -52,7 +52,7 @@ const run = async () => {
             // if(c.commit.message == undefined) {
             //     console.log(c)
             // }
-            requestedBump = await analyzeCommits(releaseRules, c.commit.message)
+            requestedBump = await analyzeCommits({releaseRules}, {commits: c.commit.message})
             console.log('REQUESTED_BUMP',requestedBump)
             // const message = c.commit.message
             // console.log(message)
