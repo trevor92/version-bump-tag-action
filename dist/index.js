@@ -42430,8 +42430,8 @@ const run = async () => {
         
 
         for( c of commitMessages ) {
-            requestedBump = await analyzeCommits({ releaseRules: rules }, c)
-        console.log('REQUESTED_BUMP', requestedBump)
+        //     requestedBump = await analyzeCommits({ releaseRules: rules }, c)
+        // console.log('REQUESTED_BUMP', requestedBump)
             // console.log(c.)
             // if(c.commit.message == undefined) {
             //     console.log(c)
@@ -42441,27 +42441,28 @@ const run = async () => {
             // console.log(message)
             // let currentBump
 
-            // if(message.includes('#patch')) {
-            //     currentBump = 1
-            //     if(currentBump > savedBump) {
-            //         savedBump = 1
-            //         requestedBump = 'patch'
-            //     }
-            // }
-            // if(message.includes('#minor')) {
-            //     currentBump = 2
-            //     if(currentBump > savedBump) {
-            //         savedBump = 2
-            //         requestedBump = 'minor'
-            //     }
-            // }
-            // if(message.includes('#major')) {
-            //     currentBump = 3
-            //     if(currentBump > savedBump) {
-            //         savedBump = 3
-            //         requestedBump = 'major'
-            //     }
-            // }
+            if(c.includes('#patch')) {
+                currentBump = 1
+                if(currentBump > savedBump) {
+                    savedBump = 1
+                    requestedBump = 'patch'
+                }
+            }
+            if(c.includes('#minor')) {
+                currentBump = 2
+                if(currentBump > savedBump) {
+                    savedBump = 2
+                    requestedBump = 'minor'
+                }
+            }
+            if(c.includes('#major')) {
+                currentBump = 3
+                if(currentBump > savedBump) {
+                    savedBump = 3
+                    requestedBump = 'major'
+                }
+            }
+            console.log(requestedBump)
         }
         
         // Create new tag on repository and set output
