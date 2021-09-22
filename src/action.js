@@ -47,17 +47,20 @@ const run = async () => {
         ]
         // console.log(commitsSinceLastTag.data.commits)
 
-        const commits = commitsSinceLastTag.data.commits.map(commitData => { return commitData.commit.message})
+        const commitMessages = commitsSinceLastTag.data.commits.map(commitData => { return commitData.commit.message })
         
-        console.l
+        console.log(commitMessages)
 
-        for( c of commitsSinceLastTag.data.commits) {
+        
+
+        for( c of commitMessages ) {
+            requestedBump = await analyzeCommits(releaseRules, c)
+        console.log('REQUESTED_BUMP', requestedBump)
             // console.log(c.)
             // if(c.commit.message == undefined) {
             //     console.log(c)
             // }
-            requestedBump = await analyzeCommits({releaseRules}, c.commit.message)
-            console.log('REQUESTED_BUMP',requestedBump)
+            
             // const message = c.commit.message
             // console.log(message)
             // let currentBump
