@@ -124,6 +124,7 @@ const run = async () => {
         }
         // const tagCreated = await runShellCommand(`git tag ${latestTag}`)
         // console.log(tagCreated)
+        await runShellCommand(`git tag ${newTag}`)
         const tagPushed = await runShellCommand(`git push origin ${newTag}`)
         console.log(tagPushed)
         console.log('New tag created:', newTag)
@@ -131,7 +132,7 @@ const run = async () => {
         
     } catch (error) {
         console.log('ERROR:', error)
-        // core.setFailed(error.message);
+        core.setFailed(error);
     }
 }
 
