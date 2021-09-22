@@ -42424,12 +42424,12 @@ const run = async () => {
         // console.log(commitsSinceLastTag.data.commits)
 
         for( c of commitsSinceLastTag.data.commits) {
-            console.log(c)
+            // console.log(c.)
             // if(c.commit.message == undefined) {
             //     console.log(c)
             // }
-            // requestedBump = await analyzeCommits(releaseRules, c.commit.message)
-            // console.log(requestedBump)
+            requestedBump = await analyzeCommits(releaseRules, c.commit.message)
+            console.log('REQUESTED_BUMP',requestedBump)
             // const message = c.commit.message
             // console.log(message)
             // let currentBump
@@ -42495,7 +42495,7 @@ const run = async () => {
         
     } catch (error) {
         console.log('ERROR:', error)
-        core.setFailed(error.message);
+        // core.setFailed(error.message);
     }
 }
 
