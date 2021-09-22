@@ -42455,7 +42455,7 @@ const run = async () => {
                     requestedBump = 'minor'
                 }
             }
-            if(c.includes('#major')) {
+            if(c.includes('changed')) {
                 currentBump = 3
                 if(currentBump > savedBump) {
                     savedBump = 3
@@ -42499,7 +42499,7 @@ const run = async () => {
         // const tagCreated = await runShellCommand(`git tag ${latestTag}`)
         // console.log(tagCreated)
         const tagPushed = await runShellCommand(`git push origin ${newTag}`)
-        // console.log(tagPushed)
+        console.log(tagPushed)
         console.log('New tag created:', newTag)
         core.setOutput(newTag)
         
