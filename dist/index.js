@@ -42419,7 +42419,7 @@ const run = async () => {
         let requestedBump = null
         let savedBump = 0
         const releaseRules = [
-            {type: 'MAJOR', release: 'major'}, {type: 'MINOR', release: 'minor'}, {type: 'PATCH', release: 'patch'}
+            { "type": "MAJOR", "release": "major" }, { "type": "MINOR", "release": "minor" }, { "type": "PATCH", "release": "patch" }
         ]
         // console.log(commitsSinceLastTag.data.commits)
 
