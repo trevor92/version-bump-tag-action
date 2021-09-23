@@ -27,6 +27,8 @@ const run = async () => {
         console.log('Latest tag is:', latestTag)
 
         const commitsSinceLastTag = await octokit.rest.repos.compareCommits({ ...context.repo, base: latestTag, head: 'HEAD' })
+
+        console.log('Commits:', commitsSinceLastTag)
     
         let requestedBump
         let savedBump = 0
