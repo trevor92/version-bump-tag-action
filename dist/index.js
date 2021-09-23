@@ -10784,14 +10784,6 @@ module.exports = require("assert");
 
 /***/ }),
 
-/***/ 3129:
-/***/ ((module) => {
-
-"use strict";
-module.exports = require("child_process");
-
-/***/ }),
-
 /***/ 8614:
 /***/ ((module) => {
 
@@ -10930,28 +10922,20 @@ var __webpack_exports__ = {};
 // This entry need to be wrapped in an IIFE because it need to be isolated against other modules in the chunk.
 (() => {
 const core = __nccwpck_require__(2186)
-// const github = require('@actions/github')
 const { context, getOctokit } = __nccwpck_require__(5438)
 
 const semver = __nccwpck_require__(1383)
 const semverSort = __nccwpck_require__(9805)
-const { exec } = __nccwpck_require__(3129)
 
 const run = async () => {
     try {
         const token = core.getInput('token')
         const defaultBump = core.getInput('default-bump')
         const withV = core.getInput('with-v')
-        const ownerrepository = core.getInput('repository')
         const { GITHUB_SHA } = process.env
     
         const octokit = getOctokit(token)
         const repoTags = await octokit.rest.repos.listTags({ ...context.repo, per_page: 1000, page: 1 })
-        // Get the owner and repository from environment variable
-        // const repoOwner = (ownerrepository.substring(0, ownerrepository.indexOf('/')))
-        // const repository = ownerrepository.substring(ownerrepository.indexOf('/') + 1)
-        // const octokit = github.getOctokit(token)
-        // const results = await octokit.rest.repos.listTags({ owner: repoOwner, repo: repository, })
        
         //Get semver tags
         const semverTags = repoTags.data.map(tag => {
@@ -10966,35 +10950,16 @@ const run = async () => {
         console.log('Latest tag is:', latestTag)
 
         const commitsSinceLastTag = await octokit.rest.repos.compareCommits({ ...context.repo, base: latestTag, head: 'HEAD' })
-        // console.log(commitsSinceLastTag.data.commits)
+        
         // Parse commits since last time to determine
         // what the next semver bump should be
-        // const commitResults = await octokit.rest.repos.compareCommits({ owner: repoOwner, repo: repository, base: latestTag, head: 'HEAD'})
+    
         let requestedBump
         let savedBump = 0
-        const rules = [
-            { "type": "MAJOR", "release": "major" }, { "type": "MINOR", "release": "minor" }, { "type": "PATCH", "release": "patch" }
-        ]
-        // console.log(commitsSinceLastTag.data.commits)
 
         const commitMessages = commitsSinceLastTag.data.commits.map(commitData => { return commitData.commit.message })
         
-        console.log(commitMessages)
-
-        
-
         for( c of commitMessages ) {
-        //     requestedBump = await analyzeCommits({ releaseRules: rules }, c)
-        // console.log('REQUESTED_BUMP', requestedBump)
-            // console.log(c.)
-            // if(c.commit.message == undefined) {
-            //     console.log(c)
-            // }
-            
-            // const message = c.commit.message
-            // console.log(message)
-            // let currentBump
-
             if(c.includes('#patch')) {
                 currentBump = 1
                 if(currentBump > savedBump) {
@@ -11002,72 +10967,40 @@ const run = async () => {
                     requestedBump = 'patch'
                 }
             }
-            if(c.includes('added')) {
+            if(c.includes('#minor')) {
                 currentBump = 2
                 if(currentBump > savedBump) {
                     savedBump = 2
                     requestedBump = 'minor'
                 }
             }
-            if(c.includes('changed')) {
+            if(c.includes('#major')) {
                 currentBump = 3
                 if(currentBump > savedBump) {
                     savedBump = 3
                     requestedBump = 'major'
                 }
             }
-            console.log(requestedBump)
         }
         
-        // Create new tag on repository and set output
-        // as new tag
+        // Determine what new tag will be based on bump
         let newTag = semver.inc(latestTag, (requestedBump || defaultBump))
         if(withV) {
             newTag = 'v'+ newTag
         }
 
-        console.log(newTag)
-
-        // const createdTag = await octokit.rest.git.createRef({
-        //     ...context.repo,
-        //     ref: `refs/tags/${newTag}`,
-        //     sha: GITHUB_SHA
-        // })
-
-        const runShellCommand = async (cmd) => {
-            return new Promise((resolve, reject) => {
-                exec(cmd, (err, stdout, stderr) => {
-                    if(err) {
-                        console.log('ERROR IN SHELL', err)
-                        reject(err)
-                        return
-                    }
-                    if(stderr) {
-                        console.log('STDERR IN SHELL', stderr)
-                        reject(stderr)
-                        return
-                    }
-                    console.log(stdout)
-                    resolve(stdout)
-                })
-            })
-        }
-
+        // Create tag on repository
         await octokit.rest.git.createRef({
             ...context.repo, 
             ref: `refs/tags/${newTag}`,
             sha: GITHUB_SHA 
         })
-        // const tagCreated = await runShellCommand(`git tag ${latestTag}`)
-        // console.log(tagCreated)
-        // await runShellCommand(`git tag ${newTag}`)
-        // const tagPushed = await runShellCommand(`git push origin ${newTag}`)
-        // console.log(tagPushed)
+
         console.log('New tag created:', newTag)
+        // Set action output(s)
         core.setOutput(newTag)
         
     } catch (error) {
-        console.log('ERROR:', error)
         core.setFailed(error);
     }
 }
