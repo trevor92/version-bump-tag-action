@@ -37,6 +37,7 @@ const run = async () => {
         const commitMessages = commitsSinceLastTag.data.commits.map(commitData => { return commitData.commit.message })
         
         for( c of commitMessages ) {
+        console.log(c)
             if(c.includes('#patch')) {
                 currentBump = 1
                 if(currentBump > savedBump) {
