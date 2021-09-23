@@ -10983,6 +10983,8 @@ const run = async () => {
                 }
             }
         }
+
+        console.log(requestedBump)
         
         // Determine what new tag will be based on bump
         let newTag = semver.inc(latestTag, (requestedBump || defaultBump))
