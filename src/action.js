@@ -34,6 +34,8 @@ const run = async () => {
         // Parse commits since last time to determine
         // what the next semver bump should be
         const commitMessages = commitsSinceLastTag.data.commits.map(commitData => { return commitData.commit.message })
+
+        console.log('CM', commitMessages)
         
         for( c of commitMessages ) {
         console.log('MESSAGE', c)
@@ -60,7 +62,7 @@ const run = async () => {
             }
         }
 
-        console.log(requestedBump)
+        console.log('REQUESTED BUMP', requestedBump)
         
         // Determine what new tag will be based on bump
         let newTag = semver.inc(latestTag, (requestedBump || defaultBump))
