@@ -10950,13 +10950,12 @@ const run = async () => {
         console.log('Latest tag is:', latestTag)
 
         const commitsSinceLastTag = await octokit.rest.repos.compareCommits({ ...context.repo, base: latestTag, head: 'HEAD' })
-        
-        // Parse commits since last time to determine
-        // what the next semver bump should be
     
         let requestedBump
         let savedBump = 0
 
+        // Parse commits since last time to determine
+        // what the next semver bump should be
         const commitMessages = commitsSinceLastTag.data.commits.map(commitData => { return commitData.commit.message })
         
         for( c of commitMessages ) {
