@@ -81,7 +81,7 @@ const run = async () => {
 
         console.log('New tag created:', newTag)
         // Set action output(s)
-        core.setOutput(newTag)
+        core.setOutput('new-tag', newTag)
         
     } catch (error) {
         core.setFailed(error);
