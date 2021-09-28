@@ -27,20 +27,19 @@ const run = async () => {
         console.log('Latest tag is:', latestTag)
 
         const commitsSinceLastTag = await octokit.rest.repos.compareCommits({ ...context.repo, base: latestTag, head: 'HEAD' })
-
-        console.log('Commits:', commitsSinceLastTag)
     
+        // Check array to see if it is an array and is not empty
+        if (Array.isArray(commitsSinceLastTag) && !arr.length) {
+            core.setFailed('No commits since last tag')
+        }
         let requestedBump
         let savedBump = 0
 
         // Parse commits since last time to determine
         // what the next semver bump should be
         const commitMessages = commitsSinceLastTag.data.commits.map(commitData => { return commitData.commit.message })
-
-        console.log('CM', commitMessages)
         
         for( c of commitMessages ) {
-        console.log('MESSAGE', c)
             if(c.includes('#patch')) {
                 currentBump = 1
                 if(currentBump > savedBump) {
@@ -64,7 +63,7 @@ const run = async () => {
             }
         }
 
-        console.log('REQUESTED BUMP', requestedBump)
+        console.log('REQUESTED BUMP is:', requestedBump)
         
         // Determine what new tag will be based on bump
         let newTag = semver.inc(latestTag, (requestedBump || defaultBump))
@@ -84,7 +83,7 @@ const run = async () => {
         core.setOutput('new-tag', newTag)
         
     } catch (error) {
-        core.setFailed(error);
+        core.setFailed('ERROR:', error);
     }
 }
 
