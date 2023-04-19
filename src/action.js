@@ -7,7 +7,7 @@ const semverSort = require('semver-sort')
 const run = async () => {
     try {
         const token = core.getInput('token')
-        const defaultBump = core.getInput('default-bump')
+        const defaultBump = core.getInput('default-bump') || 'patch'
         const withV = core.getInput('with-v')
         const { GITHUB_SHA } = process.env
     
@@ -35,11 +35,11 @@ const run = async () => {
         let requestedBump
         let savedBump = 0
 
-        // Parse commits since last time to determine
-        // what the next semver bump should be
+        // Parse commits since last time to determine what the next semver bump should be
         const commitMessages = commitsSinceLastTag.data.commits.map(commitData => { return commitData.commit.message })
         
-        for( c of commitMessages ) {
+        for(const c of commitMessages) {
+            let currentBump
             if(c.includes('#patch')) {
                 currentBump = 1
                 if(currentBump > savedBump) {
