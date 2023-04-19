@@ -16,7 +16,7 @@ jobs:
           fetch-depth: '0'
       - name: Bump version and push tag
         id: create_tag
-        uses: trevor92/version-bump-tag-action@v0.0.2
+        uses: trevor92/version-bump-tag-action@main
         with: 
           token: ${{ secrets.GHA_PAT }}
           default-bump: patch
