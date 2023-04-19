@@ -3,7 +3,7 @@ name: Create Tag
 on:
   push: 
     branches: 
-      - testing
+      - main
 
 jobs:
   job1:
