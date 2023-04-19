@@ -1,6 +1,6 @@
 {
   "name": "version-bump-tag-action",
-  "version": "1.0.0",
+  "version": "0.0.2",
   "description": "Bump Github Tag To New Version",
   "main": "index.js",
   "scripts": {
